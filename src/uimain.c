@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "tokenizer.h"
+#include "history.h"
+
+int main(){
+  char c [100];
+  char **tokens;
+  int count;
+  List *history = init_history();//create list obj
+  
+  while(1){
+  printf("Ready for input(type 'q' to quit): \n");
+  printf("> ");
+  scanf(" %99[^\n]", c);
+  if(c[0] == 'q' && c[1] =='\0'){
+    printf("bye...\n");
+    break;
+  }
+  add_history(history,c);
+
+  tokens = tokenize(c);
+  count =0;
+  while(tokens[count] != NULL){
+    printf("Token %d: %s\n", count + 1, tokens[count]);
+    count++;
+  }
+  //free memory
+  for(int i =0; i<count; i++){
+    free(tokens[i]);
+  }
+  free(tokens);
+  printf("History:\n");
+  print_history(history);
+  }
+  //free memory history
+  free_history(history);
+  
+  
+  return 0;
+}
